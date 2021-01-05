@@ -1,0 +1,62 @@
+{% extends 'store/base.html' %}
+{% load tshirt_tag %}
+{% block content %}
+
+
+
+<div class="container ">
+    <div class="row  "> 
+        <div class="col">
+            <div class="p-4 m-3 ">
+                <div class="w-75 text-center mx-auto">
+                    <img src="{{tshirt.image.url}}" alt="" class="img-fluid" style="width: 350px; height: 400px;">
+                </div>  
+            </div>
+        </div>
+
+        <div class="col p-3 m-2 ">
+                <div >
+                    <div class="display-4">{{tshirt.name}}</div>
+                    <hr>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                </div>
+
+            <div class="row ">
+                <div class="col">
+                    <label for="">Select Size</label>
+
+                    <div class="row">
+                        {% for size in tshirt.sizevariant_set.all %}
+                            
+                            <div class="col mt-2">
+                                <a href="/product_id/{{tshirt.slug}}?size={{size.size}}" class="btn  border btn-block btn-{% get_active_button_size active_size size %}">
+                                    {{size.size}}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                        <div class="display-5 badge badge-info">
+                            Save {{tshirt.descount}}%
+                        </div>
+                </div>
+
+
+
+                <div class="col border rounded mt-3">
+                    <div class="p-2">
+                        <div class="p-3 display-8">
+                            <span><del class="text-danger">{{price|rupee}}</del></span>&nbsp;
+                            <span>{{discount|rupee}}</span>
+                        </div>
+                        <a href="/add_to_cart/{{tshirt.slug}}/{{active_size.size}}?return_url={{request.get_full_path}}" class="btn btn-outline-dark btn-block">Add to card</a>
+                        <a href="" class="btn btn-outline-dark btn-block">Buy Now</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

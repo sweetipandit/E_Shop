@@ -1,0 +1,76 @@
+{% extends 'store/base.html' %}
+{% load tshirt_tag %}
+
+ {% block content %}
+
+    <div class="container mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>item</th>
+                    <th>status</th>
+                    
+                </tr>
+
+            </thead>
+
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{order.date|date}}</td>
+
+                        
+                            <td>
+                            <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>image</th>
+                                            <th>tshirt</th>
+                                            <th>size</th>
+                                            <th>price</th>
+                                            <th>qua.</th>
+                                            <th>total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for orderitem in order.orderitem_set.all%}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td><img height="40px" class="border" src="{{orderitem.tshirt.image.url}}" alt=""></td>
+                                            <td>{{orderitem.tshirt.name}} </td>
+                                            <td>{{orderitem.sizeVariant.size}} </td>
+                                            <td>{{orderitem.price|rupee}}</td>
+                                            <td>{{orderitem.quantity}}</td>
+                                            <td>{% price_quantity_multiply orderitem.price orderitem.quantity as total %}{{total|rupee}}</td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+
+                                        <tfoot>
+                                            <tr><th colspan="2">Payable Amount: {{order.total|rupee}}</th> </tr>
+                                        </tfoot>
+                                        
+
+                                    </tbody>
+                            </table>
+                            </td>
+                           
+                            <td><span class="badge badge-{% badge_class_attr order.order_status %}">{{order.order_status}}</span></td>
+                                    
+                </tr>    
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+{% endblock %}

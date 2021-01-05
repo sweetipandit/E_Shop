@@ -1,0 +1,66 @@
+{% extends 'store/base.html' %}
+{% load crispy_forms_tags %}
+{% load tshirt_tag %}
+ {% block content %}
+ <div class="container">
+
+    <div class="row p-2  mt-5" >
+
+            <div class=" col-lg-5">
+                <div class="display-5 text-center">Checkout Here</div>
+                <hr>
+
+                
+                <div class="row p-2">
+                    <div class="col p-3 border rounded">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                            <hr>
+                            <div class="form-group">
+                                <input type="submit" value="Place Order" class="btn btn-outline-dark">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div> 
+            
+            <div class="col-lg-6 ml-3 border-rounded">
+                <div class="text-center display-5"> Products</div>
+                <div class="border rounded">
+                        <table class="table table-sm">
+                            <thead>
+                               
+                                <tr>
+                                <th>#</th>
+                                <th>tshirt</th>
+                                <th>size</th>
+                                <th>price</th>
+                                </tr>
+                               
+                            </thead>
+
+                            <tbody>
+                                {% for cart_obj in cart_list%}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td><img height="40px" class="rounded-circle" src="{{cart_obj.size.tshirt.image.url}}" alt=""></td>
+                                    <td>{{cart_obj.size.size}}</td>
+                                    <td>{% sale_price cart_obj.size.prize cart_obj.tshirt.descount %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+                        <hr>
+                        <div>
+                            <div class="display-5">Total Payable Amount:{{cart_list|total_payable_amount|rupee}}</div>
+                        </div>
+                </div>
+
+            </div>
+    </div>
+ </div>
+
+{% endblock %}

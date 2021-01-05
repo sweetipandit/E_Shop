@@ -1,0 +1,189 @@
+
+{% extends 'store/base.html' %}
+
+{% load tshirt_tag %}
+
+{% block content %}
+
+<div class="container-fluid mt-5 ">
+
+  <div class="row m-1">
+
+    <div class="col-4 col-sm-3 col-lg-2 border mt-4">
+        <form id="filterForm" action="/">
+          <!---filter div---->
+          <div>
+
+            <!---brand---->
+            <div class="form-group">
+              <label for="brand">Brand</label>
+
+              <select onchange="submitForm()" name="brand" class="form-control" id="brand">
+                <option value="">select</option>
+                {% for name in brands %}
+                <option {% selected_attr request.GET.brand name.slug %} value="{{name.slug}}">{{name.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+
+            <!---color---->
+            <div class="form-group">
+              <label for="color">Color</label>
+
+              <select onchange="submitForm()" name="color" class="form-control" id="color">
+                <option value="">select</option>
+                {% for name in colors %}
+                <option {% selected_attr request.GET.color name.slug %} value="{{name.slug}}">{{name.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+            <!---sleeve---->
+            <div class="form-group">
+              <label for="sleeve">Sleeve</label>
+
+              <select onchange="submitForm()" name="sleeve" class="form-control" id="sleeve">
+                <option value="">select</option>
+                {% for name in sleeves %}
+                <option {% selected_attr request.GET.sleeve name.slug %} value="{{name.slug}}">{{name.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+            <!---necktype---->
+            <div class="form-group">
+              <label for="necktype">Necktype</label>
+
+              <select onchange="submitForm()" name="necktype" class="form-control" id="necktype">
+                <option value="">select</option>
+                {% for name in necktypes %}
+                <option {% selected_attr request.GET.necktype name.slug %} value="{{name.slug}}">{{name.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+            <!---occasion---->
+            <div class="form-group">
+              <label for="occasion">Occasion</label>
+
+              <select onchange="submitForm()" name="occasion" class="form-control" id="occasion">
+                <option value="">select</option>
+                {% for name in occasions %}
+                <option {% selected_attr request.GET.occasion name.slug %} value="{{name.slug}}">{{name.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+            <!---idealfor---->
+            <div class="form-group">
+              <label for="idealfor">Idealfor</label>
+
+              <select onchange="submitForm()" name="idealfor" class="form-control" id="idealfor">
+                <option value="">select</option>
+                {% for name in idealfors %}
+                <option {% selected_attr request.GET.idealfor name.slug %} value="{{name.slug}}">{{name.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <a href="/" class="btn btn-info btn-sm">clear filter</a>
+
+          </div>
+
+
+        </form>
+    </div>
+
+    
+
+
+
+<!--product colum-->
+    <div class="col-8 col-sm-9 col-lg-10 mt-4 ">
+      <div class="row">
+        {% for product in page_obj %}
+        <div class="col-sm-6  col-md-4 col-lg-3  mx-auto mt-2  ">
+          <div class="card shadow-sm ">
+            <img src="{{product.image.url}}" class="card-img-top " style="height: 200px;" alt="card image">
+
+            <div class="card-body">
+              <span class="card-title"><b>{{product.name}}</b></span><br>
+              <p class="card-text"><b>{{product.brand}}</b></p>
+              <span class="badge badge-info">save {{product.descount}}%</span><br>
+              <span class="text-danger"><del>{% min_price product as minprice %}
+                  {{minprice|rupee}}
+                </del></span>&nbsp;
+
+              <span><b>{% discount_price product as discount %}
+                  {{discount|rupee}}
+                </b></span>
+            </div>
+
+            <div class="card-footer p-0  ">
+              <a href="/product_id/{{product.slug}}" class=" btn btn-outline-info border-0 rounded-0 btn-block">see more</a>
+
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+
+      <div class=" row justify-content-center">
+        <nav aria-label="Page navigation example" class="mt-2 float-right ">
+          <ul class="pagination ">
+
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{{pageurl}}1">&laquo; first</a></li>
+            <li class="page-item"> <a class="page-link"
+                href="?{{pageurl}}{{ page_obj.previous_page_number }}">previous</a></li>
+            {% endif %}
+
+            {% if page_obj %}
+            <span class="current">
+              <li class="page-item"><a class="page-link"> Page {{ page_obj.number }} of
+                  {{ page_obj.paginator.num_pages }}</a></li>
+            </span>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?{{pageurl}}{{ page_obj.next_page_number }}">next</a></li>
+            <li class="page-item"><a class="page-link" href="?{{pageurl}}{{ page_obj.paginator.num_pages }}">last
+                &raquo;</a></li>
+            {% endif %}
+
+
+          </ul>
+        </nav>
+      </div>
+
+      
+
+
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function submitForm() {
+    document.getElementById('filterForm').submit()
+  }
+</script>
+
+
+{% endblock %}

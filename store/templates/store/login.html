@@ -1,0 +1,26 @@
+{% extends 'store/base.html' %}
+{% load crispy_forms_tags %}
+ {% block content %}
+
+
+<div class="col-lg-3 mx-auto border rounded p-3 mt-4">
+    <form action="/login" method="POST">
+            {% csrf_token %}
+            <h2 class="display-4 text-center">Login Here</h2>
+            
+            <hr>
+            <div class="text-center">
+                <img height="100px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRN2gGnI8aPV-Y9uXVBC_DDy2mgs6E0cVKAuBEkK_LjwODVtPsNUOBbuLbZ2IYEK9zJ4wPHmH14&usqp=CAc" alt="">
+
+            </div>
+                        {{form|crispy}}
+        <div>
+            <div class="form-group">
+            <input type="submit"  value="login" class="btn btn-info">
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
