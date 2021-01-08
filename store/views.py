@@ -49,7 +49,7 @@ class Index(View):
             products = products.filter(sleeve__slug=sleeve)
 
         if idealfor:
-            products = products.filter(ideal_f*or__slug=idealfor)
+            products = products.filter(ideal_for__slug=idealfor)
 
 
 
